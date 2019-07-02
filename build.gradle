@@ -21,8 +21,14 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	
+   /*
+   *** added for the project dependencies	
+    */
+	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	compile 'com.github.derjust:spring-data-dynamodb:5.0.4'
+	compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.95'
 }
