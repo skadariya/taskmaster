@@ -12,7 +12,7 @@ Tasks should advance from Available -> Assigned -> Accepted -> Finished.
 
 
 # A link to deployed application.
-> TaskMaster: (http://task-dev.us-west-2.elasticbeanstalk.com/)
+> TaskMaster: http://task-dev.us-west-2.elasticbeanstalk.com/
 
 # Issues Faces
 > Setting up the environment variable on local machine and setting it up in EB. 
