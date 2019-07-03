@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import saurav.taskmaster.task.Model.Task;
 import saurav.taskmaster.task.Repository.TaskRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,23 +39,16 @@ public class TasksController {
     }
     */
     @PostMapping("/tasks")
-    public List<Task> postTasks(@RequestParam String title, String description,@RequestParam(required = false, defaultValue = "")String assignee) {
-        try{
-            Task newTask;
-            if(assignee.equals("")){
-                newTask = new Task(title, description);
-            }
-            else{
-                newTask = new Task(title, description,assignee);
-            }
-
-            taskRepository.save(newTask);
-            List<Task> allTask = (List)taskRepository.findAll();
-            return allTask;
+    public List<Task> postTasks(@RequestBody Task task) {
+    // Task task doesn't matter what you have in constructor, it what data is been passed
+        if (task.getAssignee().equals("")) {
+            task.setStatus("Available");
+        }else {
+            task.setStatus("Assigned");
         }
-        catch (Exception ex){
-            return null;
-        }
+        taskRepository.save(task);
+        List<Task> allTask = (List) taskRepository.findAll();
+        return allTask;
     }
     @GetMapping("/tasks")
     public List<Task> getTasks(){

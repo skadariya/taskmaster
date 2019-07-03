@@ -21,7 +21,6 @@ repositories {
 }
 
 dependencies {
-	
    /*
    *** added for the project dependencies	
     */

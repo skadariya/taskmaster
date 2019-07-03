@@ -21,6 +21,7 @@ public class Task {
         this.setTitle(title);
         this.setDescription(description);
         this.setStatus("Available");
+        this.setAssignee("");
     }
     public Task(String title,String description,String assignee){
         this.setTitle(title);
