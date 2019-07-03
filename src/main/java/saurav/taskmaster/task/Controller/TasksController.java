@@ -38,11 +38,23 @@ public class TasksController {
     }
     */
     @PostMapping("/tasks")
-    public List<Task> postTasks(@RequestParam String title, String description) {
-        Task newTask = new Task(title, description);
-        taskRepository.save(newTask);
-        List<Task> allTask = (List)taskRepository.findAll();
-        return allTask;
+    public List<Task> postTasks(@RequestParam String title, String description,@RequestParam(required = false, defaultValue = "")String assignee) {
+        try{
+            Task newTask;
+            if(assignee.equals("")){
+                newTask = new Task(title, description);
+            }
+            else{
+                newTask = new Task(title, description,assignee);
+            }
+
+            taskRepository.save(newTask);
+            List<Task> allTask = (List)taskRepository.findAll();
+            return allTask;
+        }
+        catch (Exception ex){
+            return null;
+        }
     }
     @GetMapping("/tasks")
     public List<Task> getTasks(){
@@ -62,6 +74,26 @@ public class TasksController {
             task.setStatus("Finished");
         }
         taskRepository.save(task);
+        List<Task> allTask = (List)taskRepository.findAll();
+        return allTask;
+    }
+    /*
+    Lab 27: Structuring Data with NoSQL
+     */
+    @GetMapping("/users/{name}/tasks")
+    public List<Task> getTaskByAssignee(@PathVariable String name){
+        List<Task> allTask = taskRepository.findByAssignee(name);
+        return allTask;
+    }
+    @PutMapping("/tasks/{id}/assign/{assignee}")
+    public List<Task> putTasksIdAssignAssignee(@PathVariable UUID id, @PathVariable String assignee){
+        Task task = taskRepository.findById(id).get();
+        if(task != null){
+            task.setAssignee(assignee);
+            task.setStatus("Assigned");
+            taskRepository.save(task);
+        }
+
         List<Task> allTask = (List)taskRepository.findAll();
         return allTask;
     }
