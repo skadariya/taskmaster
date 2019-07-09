@@ -24,8 +24,12 @@ It should not matter whether or not that assignee is already in the database.
 
 > User should be able to make a GET request to /users/{name}/tasks and receive JSON data representing all of the tasks assigned to that user.
 
+> POST /tasks/{id}/images. This means it only needs to work for existing tasks, not as part of the initial creation of a task.
+
+> GET /tasks/{id} : Fetching a single task  should also include the image URLs associated with that image.
+
 # A link to deployed application.
-> TaskMaster: http://task-dev.us-west-2.elasticbeanstalk.com/
+> TaskMaster: http://task-dev.us-west-2.elasticbeanstalk.com
 
 # Issues Faces
 
