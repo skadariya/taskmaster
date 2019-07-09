@@ -14,6 +14,7 @@ public class Task {
     private String description;
     private String status;
     private String assignee;
+    private String images;
 
 
     public Task(){}
@@ -74,5 +75,14 @@ public class Task {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    @DynamoDBAttribute
+    public String getImages() {
+        return images;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
     }
 }
