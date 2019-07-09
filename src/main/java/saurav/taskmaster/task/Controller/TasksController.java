@@ -3,7 +3,10 @@ package saurav.taskmaster.task.Controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 import saurav.taskmaster.task.Model.Task;
+import saurav.taskmaster.task.Repository.S3Client;
 import saurav.taskmaster.task.Repository.TaskRepository;
 
 import java.util.ArrayList;
@@ -12,32 +15,22 @@ import java.util.UUID;
 
 @RestController
 public class TasksController {
+
+    private S3Client s3Client;
+
     @Autowired
     TaskRepository taskRepository;
+
+    @Autowired
+    TasksController(S3Client s3Client) {
+        this.s3Client = s3Client;
+    }
 
     @GetMapping("/home")
     public String getHome(){
         return "index";
     }
-    //String title,String description, String status
-    /*
-    ** Commented out due, initially create controller, updated to rest controller
 
-    @GetMapping("/task/post")
-            public String postTask(){
-            return "getTask";
-    }
-    @PostMapping(value = "/task/post")
-    public String postTask(@RequestParam String title, String description){
-        Task newTask = new Task(title,description);
-        taskRepository.save(newTask);
-        return "index";
-    }
-    @GetMapping("/task/{id}/put")
-    public String putTask(){
-        return "getTask";
-    }
-    */
     @PostMapping("/tasks")
     public List<Task> postTasks(@RequestBody Task task) {
     // Task task doesn't matter what you have in constructor, it what data is been passed
@@ -90,5 +83,21 @@ public class TasksController {
 
         List<Task> allTask = (List)taskRepository.findAll();
         return allTask;
+    }
+    /*
+    Lab 04: Programmatic S3 Uploads
+     */
+    @PostMapping("/tasks/{id}/images")
+    public RedirectView addImages(@PathVariable UUID id, @RequestParam(value="file")MultipartFile file){
+        Task selectedTask = taskRepository.findById(id).get();
+        String pic = this.s3Client.uploadFile(file);
+        selectedTask.setImages(pic);
+        taskRepository.save(selectedTask);
+        return new RedirectView("http://taskmaster1.s3-website-us-west-2.amazonaws.com/");
+    }
+    @GetMapping("/tasks/{id}")
+    public Task addImages(@PathVariable UUID id){
+        Task selectedTask = taskRepository.findById(id).get();
+        return selectedTask;
     }
 }
