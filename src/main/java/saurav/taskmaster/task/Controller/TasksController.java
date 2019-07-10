@@ -87,11 +87,16 @@ public class TasksController {
     /*
     Lab 04: Programmatic S3 Uploads
      */
+    // .get(0) returns the file url in regular bucket
+    // .get(1) returns the file url saved in the resized bucket
     @PostMapping("/tasks/{id}/images")
     public RedirectView addImages(@PathVariable UUID id, @RequestParam(value="file")MultipartFile file){
         Task selectedTask = taskRepository.findById(id).get();
-        String pic = this.s3Client.uploadFile(file);
-        selectedTask.setImages(pic);
+        List<String> pic = this.s3Client.uploadFile(file);
+        //saving images and thumbImg
+        selectedTask.setImages(pic.get(0));
+        selectedTask.setThumbImg(pic.get(1));
+
         taskRepository.save(selectedTask);
         return new RedirectView("http://taskmaster1.s3-website-us-west-2.amazonaws.com/");
     }
