@@ -28,6 +28,14 @@ It should not matter whether or not that assignee is already in the database.
 
 > GET /tasks/{id} : Fetching a single task  should also include the image URLs associated with that image.
 
+## Using the SQS with Lambda
+> Send an email to an administrator when a task is completed
+
+> Send a text to the person to whom a task is assigned (when it gets assigned)
+
+> When a task is deleted from Dynamo, trigger a message that will fire a lambda to remove any images associated to it from S3
+Instead of having S3 run the resizer automatically on upload, evaluate the size of the image in your Java code and then send a message to a Q, that will in turn trigger the lambda resizer -- only when the image > 350k
+
 ## Implementing AWS Lambda
 > A user should be able to upload an image at any size, and have both the original size and a thumbnail size associated with the task in question.
 When an image is uploaded to your S3 bucket, it should trigger a Lambda function. (That Lambda function may be written in any language.)
@@ -36,6 +44,11 @@ That function should create a 50x50 pixel thumbnail version of that image, and s
 # A link to deployed application.
 > TaskMaster: http://task-dev.us-west-2.elasticbeanstalk.com
 
+# Reference 
+> https://docs.aws.amazon.com/sns/latest/dg/sms_publish-to-phone.html
+
+> https://docs.aws.amazon.com/ses/latest/DeveloperGuide/send-using-sdk-java.html
+
 # Issues Faces
 
 > Setting up the environment variable on local machine and setting it up in EB. 
@@ -43,3 +56,7 @@ That function should create a 50x50 pixel thumbnail version of that image, and s
 > Dependecy issued . Current version of Dynamodb: 
   > compile 'com.github.derjust:spring-data-dynamodb:5.1.0'
 	> compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
+	
+> Dependencies for SMS and SES
+	> compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
+	> compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.595'
