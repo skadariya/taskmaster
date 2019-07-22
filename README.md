@@ -58,5 +58,7 @@ That function should create a 50x50 pixel thumbnail version of that image, and s
 	> compile 'com.amazonaws:aws-java-sdk-dynamodb:1.11.585'
 	
 > Dependencies for SMS and SES
-	> compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
-	> compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.595'
+
+	* compile group: 'com.amazonaws', name: 'aws-java-sdk-sns', version: '1.11.595'
+	
+	* compile group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.595'
